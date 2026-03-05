@@ -70,6 +70,8 @@ export function shouldSkipElement(element) {
   if (closest) return true;
 
   // Skip if inside a PriceTag annotation (avoid double-processing)
+  // Uses both class and data attribute for defense-in-depth against infinite loops
+  if (parent.closest('[data-pricetag-processed]')) return true;
   if (parent.closest('.pricetag-annotation')) return true;
 
   return false;

@@ -86,6 +86,7 @@ function annotateTextNode(textNode) {
 
     const wrapper = document.createElement('span');
     wrapper.className = 'pricetag-annotation';
+    wrapper.setAttribute('data-pricetag-processed', 'true');
     wrapper.setAttribute('data-pricetag-tier', tier);
 
     // Original price text

@@ -68,9 +68,10 @@ function setupOnboarding() {
       hourlyWage = salary / (hoursPerWeek * weeksPerYear);
     }
 
-    if (!hourlyWage || hourlyWage <= 0) {
-      $('#hourly-input').style.borderColor = '#ef4444';
-      $('#hourly-input').focus();
+    if (!isFinite(hourlyWage) || hourlyWage <= 0 || hourlyWage > 100000) {
+      const focusEl = incomeMode === 'hourly' ? '#hourly-input' : '#salary-input';
+      $(focusEl).style.borderColor = '#ef4444';
+      $(focusEl).focus();
       return;
     }
 
@@ -191,8 +192,8 @@ function renderThreshold() {
   });
 
   slider.addEventListener('change', async () => {
-    await saveSettings({ minPrice: parseInt(slider.value) });
-    settings.minPrice = parseInt(slider.value);
+    await saveSettings({ minPrice: parseInt(slider.value, 10) });
+    settings.minPrice = parseInt(slider.value, 10);
   });
 }
 
@@ -252,7 +253,7 @@ function setupWageEditor() {
 
   async function commitWageEdit() {
     const val = parseFloat(inputEl.value);
-    if (val && val > 0) {
+    if (isFinite(val) && val > 0 && val <= 100000) {
       settings.hourlyWage = Math.round(val * 100) / 100;
       await saveSettings({ hourlyWage: settings.hourlyWage });
       renderWage();

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head><title>Generate PriceTag Icons</title></head>
+<body>
+<script>
+// Run this in a browser to generate the icon PNGs
+// Or we use canvas in Node — for now, create SVG-based placeholders
+
+const sizes = [16, 48, 128];
+sizes.forEach(size => {
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+
+  // Background circle
+  ctx.beginPath();
+  ctx.arc(size/2, size/2, size/2 - 1, 0, Math.PI * 2);
+  ctx.fillStyle = '#0f766e';
+  ctx.fill();
+
+  // Clock outline
+  const r = size * 0.35;
+  ctx.beginPath();
+  ctx.arc(size/2, size/2, r, 0, Math.PI * 2);
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = size * 0.06;
+  ctx.stroke();
+
+  // Hour hand
+  ctx.beginPath();
+  ctx.moveTo(size/2, size/2);
+  ctx.lineTo(size/2 + r*0.3, size/2 - r*0.55);
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = size * 0.06;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+
+  // Minute hand
+  ctx.beginPath();
+  ctx.moveTo(size/2, size/2);
+  ctx.lineTo(size/2 - r*0.15, size/2 - r*0.7);
+  ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+  ctx.lineWidth = size * 0.04;
+  ctx.stroke();
+
+  // $ sign
+  ctx.font = `bold ${size * 0.22}px sans-serif`;
+  ctx.fillStyle = '#5eead4';
+  ctx.textAlign = 'center';
+  ctx.fillText('$', size/2, size * 0.88);
+
+  const link = document.createElement('a');
+  link.download = `icon-${size}.png`;
+  link.href = canvas.toDataURL();
+  link.textContent = `Download ${size}x${size}`;
+  document.body.appendChild(link);
+  document.body.appendChild(document.createElement('br'));
+});
+</script>
+</body>
+</html>
